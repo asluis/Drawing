@@ -14,8 +14,26 @@ struct ContentView: View {
     @State private var distance = 25.0
     @State private var amount: CGFloat = 1.0
     @State private var hue = 0.6
+    
+    @State private var thicknessOfArrow:CGFloat = 10
 
     var body: some View {
+        
+        VStack{
+            Arrow()
+                .stroke(Color.blue, style: StrokeStyle(lineWidth: thicknessOfArrow, lineCap: .round, lineJoin: .round))
+                .frame(width: 300, height: 300)
+            Spacer()
+            
+            Slider(value: $thicknessOfArrow.animation())
+                .padding(.horizontal)
+        }
+        
+            
+        
+        
+        
+        /*
         VStack(spacing: 0) {
             Spacer()
 
@@ -47,7 +65,29 @@ struct ContentView: View {
                     .padding(.horizontal)
             }
         }
+ */
     }
+}
+
+struct Arrow: Shape{
+    
+    func path(in rect: CGRect) -> Path {
+        var path = Path();
+        
+        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.midY))
+        path.addLine(to: CGPoint(x: rect.midX / 2 + rect.midX/4, y: rect.midY))
+        path.addLine(to: CGPoint(x: rect.midX / 2 + rect.midX/4, y: rect.maxY))
+        
+        path.addLine(to: CGPoint(x: rect.midX + rect.midY/4, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.midX + rect.midY/4, y: rect.midY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+        
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
+        
+        return path;
+    }
+    
 }
 
 struct Spirograph: Shape {
